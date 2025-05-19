@@ -90,7 +90,7 @@ export const SearchPage = () => {
   }, [isError, error]);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4, minHeight: '80vh' }}>
+    <Container maxWidth="lg" fixed sx={{ py: 4, height: '100vh' }}>
       <Typography variant="h4" component="h1" gutterBottom>
         Movie Search
       </Typography>

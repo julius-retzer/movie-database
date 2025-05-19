@@ -10,7 +10,13 @@ import '@fontsource/roboto/700.css';
 import { SearchPage } from './features/search/SearchPage';
 
 // Create a client
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 // Create a theme instance
 const theme = createTheme({
