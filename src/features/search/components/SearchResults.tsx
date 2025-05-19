@@ -1,4 +1,5 @@
 import { Grid, Typography, Card, CardContent, CardMedia, CardActionArea, Skeleton, Box } from '@mui/material';
+import { MoviePoster } from '../../../components/MoviePoster';
 import type { Movie } from '@/types/api';
 
 type SearchResultsProps = {
@@ -42,17 +43,15 @@ export const SearchResults = ({ movies, loading, onMovieSelect }: SearchResultsP
         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={movie.imdbID}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardActionArea onClick={() => onMovieSelect(movie.imdbID)}>
-              <CardMedia
-                component="img"
-                height="300"
-                image={movie.Poster !== 'N/A' ? movie.Poster : '/no-poster.png'}
-                alt={movie.Title}
-                sx={{
-                  objectFit: 'cover',
-                  bgcolor: 'background.paper',
-                  aspectRatio: '2/3',
-                }}
-              />
+              <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
+                <MoviePoster
+                  src={movie.Poster}
+                  alt={`${movie.Title} poster`}
+                  width={200}
+                  height={300}
+                  sx={{ width: '100%', maxWidth: 300, aspectRatio: '2/3' }}
+                />
+              </Box>
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div" noWrap>
                   {movie.Title}
