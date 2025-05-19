@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { FavoritesProvider } from './context/FavoritesContext';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -10,6 +11,8 @@ import '@fontsource/roboto/700.css';
 
 import { SearchPage } from './features/search/SearchPage';
 import { MovieDetailPage } from './features/movie/MovieDetailPage';
+import { FavoritesPage } from './features/favorites/FavoritesPage';
+import { Header } from './components/layout/Header';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -50,11 +53,15 @@ function App() {
         <CssBaseline />
         {import.meta.env.DEV && <ReactQueryDevtools />}
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<SearchPage />} />
-            <Route path="/movie/:id" element={<MovieDetailPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <FavoritesProvider>
+            <Header />
+            <Routes>
+              <Route path="/" element={<SearchPage />} />
+              <Route path="/movie/:id" element={<MovieDetailPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </FavoritesProvider>
         </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>

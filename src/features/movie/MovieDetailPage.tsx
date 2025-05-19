@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { Box,Grid, Typography, Container, Paper, CircularProgress, Alert, Stack, Chip, Divider } from '@mui/material';
+import { Box, Grid, Typography, Container, Paper, CircularProgress, Alert, Stack, Chip, Divider } from '@mui/material';
 import { getMovieById } from '../../api/omdb';
 import { isApiError } from '../../types/api';
+import { FavoriteButton } from '../../components/FavoriteButton';
 
 type MovieDetailPageProps = {
   id?: string;
@@ -43,11 +44,12 @@ export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
     );
   }
 
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, mb: 4 }}>
         <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={4}>
-          <Box flexShrink={0} sx={{ width: { xs: '100%', sm: '300px' }, mx: 'auto' }}>
+          <Box flexShrink={0} sx={{ width: { xs: '100%', sm: '300px' }, mx: 'auto', position: 'relative' }}>
             <Box
               component="img"
               src={movie.Poster !== 'N/A' ? movie.Poster : '/placeholder-movie.png'}
@@ -62,10 +64,20 @@ export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
           </Box>
 
           <Box flexGrow={1}>
-            <Box display="flex" alignItems="center" gap={2} mb={2}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2} flexWrap="wrap" gap={2}>
               <Typography variant="h3" component="h1">
                 {movie.Title}
               </Typography>
+              <FavoriteButton
+              movie={{
+                Title: movie.Title,
+                Year: movie.Year,
+                imdbID: movie.imdbID,
+                Type: movie.Type,
+                Poster: movie.Poster
+              }}
+              size="large"
+            />
               <Chip
                 label={movie.Year}
                 color="primary"
