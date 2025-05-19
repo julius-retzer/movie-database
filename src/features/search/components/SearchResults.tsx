@@ -1,7 +1,8 @@
-import { Grid, Typography, Card, CardContent, CardActions, Skeleton, Box, Button } from '@mui/material';
+import { Grid, Typography, Card, CardContent, CardActions, Skeleton, Box, Button, Stack } from '@mui/material';
 import { MoviePoster } from '../../../components/MoviePoster/MoviePoster';
 import type { Movie } from '../../../types/api';
 import { useNavigate } from 'react-router-dom';
+import { FavoriteButton } from '../../../components/FavoriteButton';
 
 type SearchResultsProps = {
   movies?: Movie[];
@@ -88,14 +89,18 @@ console.log(movies);
                 {movie.Year} • {movie.Type}
               </Typography>
             </CardContent>
-            <CardActions sx={{ mt: 'auto', p: 2 }}>
+            <CardActions sx={{ mt: 'auto', p: 2, justifyContent: 'space-between' }}>
               <Button
                 size="small"
                 variant="contained"
-                onClick={() => navigate(`/movie/${movie.imdbID}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/movie/${movie.imdbID}`);
+                }}
               >
                 View Details
               </Button>
+              <FavoriteButton movie={movie} size="small" />
             </CardActions>
           </Card>
         </Grid>
