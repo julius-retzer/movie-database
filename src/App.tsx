@@ -9,6 +9,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import { SearchPage } from './features/search/SearchPage';
+import { MovieDetailPage } from './features/movie/MovieDetailPage';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -51,6 +52,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<SearchPage />} />
+            <Route path="/movie/:id" element={<MovieDetailPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

@@ -36,11 +36,11 @@ src/
 
 ### 1. Search Page
 - [x] Create search input component with debounce
-- [ ] Implement search results list with pagination
-- [ ] Add URL state synchronization with nuqs
-- [ ] Implement loading and error states
-- [ ] Add empty and no results states
-- [ ] Make it responsive
+- [x] Implement search results list with pagination
+- [x] Add URL state synchronization
+- [x] Implement loading and error states
+- [x] Add empty and no results states
+- [x] Make it responsive
 
 ### 2. Movie Detail Page
 - [ ] Create movie detail layout
@@ -59,7 +59,6 @@ src/
 ## State Management
 - [ ] Set up React Query provider
 - [ ] Create favorites store/context
-- [ ] Implement URL state with nuqs
 - [ ] Set up proper TypeScript types
 
 ## UI/UX

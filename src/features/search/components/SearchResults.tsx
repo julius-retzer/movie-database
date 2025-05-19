@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 type SearchResultsProps = {
   movies?: Movie[];
   loading: boolean;
-  onMovieSelect: (imdbID: string) => void;
 };
 
-export const SearchResults = ({ movies, loading, onMovieSelect }: SearchResultsProps) => {
+export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
 
   const navigate = useNavigate();
 
@@ -90,11 +89,12 @@ console.log(movies);
               </Typography>
             </CardContent>
             <CardActions sx={{ mt: 'auto', p: 2 }}>
-              <Button size="small" onClick={() => onMovieSelect(movie.imdbID)}>
+              <Button
+                size="small"
+                variant="contained"
+                onClick={() => navigate(`/movie/${movie.imdbID}`)}
+              >
                 View Details
-              </Button>
-              <Button size="small" onClick={() => navigate(`/movie/${movie.imdbID}`)}>
-                Learn More
               </Button>
             </CardActions>
           </Card>

@@ -65,12 +65,6 @@ export const SearchPage = () => {
     },
     [searchParams, setSearchParams]
   );
-
-  // Handle movie selection
-  const handleMovieSelect = useCallback((imdbID: string) => {
-    navigate(`/movie/${imdbID}`, { state: { fromSearch: true } });
-  }, [navigate]);
-
   // Calculate total pages
   const totalPages = useMemo(() => {
     if (!data?.totalResults) return 0;
@@ -111,7 +105,6 @@ export const SearchPage = () => {
       <SearchResults
         movies={data?.Search}
         loading={isLoading}
-        onMovieSelect={handleMovieSelect}
       />
 
       {totalPages > 1 && (
