@@ -46,11 +46,11 @@ Use react-router for page navigation
 
 Use README.md to describe project and it’s scripts.
 
-Use context api
+Use context api, if needed
 
-Properly handle side effects and async calls react-query
+Properly handle side effects and async calls with react-query
 
-Persist user`s favourite movies on client side
+Persist user`s favourite movies on client side (local storage)
 
 
 
@@ -58,19 +58,12 @@ Nice to have
 
 Use Material UI with Emotion
 
-Tests for your code (100% codecoverage is not required)
+Tests for your code (100% codecoverage is not required) use vite test
 
 Deploy your solution and share the link
 
 BONUS: After all, if coding is still fun :) you can show what you know and try to split application to 3 standalone chunks (Search, Detail, Favorites). Each chunk will fetch on demand when is needed and just once. (Hint: google „code splitting“ :) )
 
-
-
-
-
-How to submit
-
-Upload your completed project to your Github/Bitbucket/Gitlab, and then paste a link to the repository below in the form along with any comments you have about your solution.
 
 
 
