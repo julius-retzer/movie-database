@@ -1,14 +1,18 @@
-import { Grid, Typography, Card, CardContent, CardMedia, CardActionArea, Skeleton, Box } from '@mui/material';
-import { MoviePoster } from '../../../components/MoviePoster';
-import type { Movie } from '@/types/api';
+import { Grid, Typography, Card, CardContent, CardActions, Skeleton, Box, Button } from '@mui/material';
+import { MoviePoster } from '../../../components/MoviePoster/MoviePoster';
+import type { Movie } from '../../../types/api';
+import { useNavigate } from 'react-router-dom';
 
 type SearchResultsProps = {
-  movies: Movie[];
+  movies?: Movie[];
   loading: boolean;
   onMovieSelect: (imdbID: string) => void;
 };
 
 export const SearchResults = ({ movies, loading, onMovieSelect }: SearchResultsProps) => {
+
+  const navigate = useNavigate();
+
   if (loading) {
     return (
       <Grid container spacing={3} sx={{ mt: 2 }}>
@@ -27,6 +31,11 @@ export const SearchResults = ({ movies, loading, onMovieSelect }: SearchResultsP
     );
   }
 
+
+  if (!movies) {
+    return null;
+  }
+
   if (movies.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
@@ -36,31 +45,30 @@ export const SearchResults = ({ movies, loading, onMovieSelect }: SearchResultsP
       </Box>
     );
   }
+console.log(movies);
 
   return (
-    <Grid container spacing={3} sx={{ mt: 2 }}>
+    <Grid container spacing={3}  sx={{ mt: 2 }}>
       {movies.map((movie) => (
         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={movie.imdbID}>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardActionArea onClick={() => onMovieSelect(movie.imdbID)}>
-              <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
-                <MoviePoster
-                  src={movie.Poster}
-                  alt={`${movie.Title} poster`}
-                  width={200}
-                  height={300}
-                  sx={{ width: '100%', maxWidth: 300, aspectRatio: '2/3' }}
-                />
-              </Box>
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="div" noWrap>
-                  {movie.Title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {movie.Year} • {movie.Type}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+          <Card sx={{ height: '100%' }}>
+            <MoviePoster movie={movie} />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div" noWrap>
+                {movie.Title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                {movie.Year} • {movie.Type}
+              </Typography>
+            </CardContent>
+            <CardActions sx={{ mt: 'auto', p: 2 }}>
+              <Button size="small" onClick={() => onMovieSelect(movie.imdbID)}>
+                View Details
+              </Button>
+              <Button size="small" onClick={() => navigate(`/movie/${movie.imdbID}`)}>
+                Learn More
+              </Button>
+            </CardActions>
           </Card>
         </Grid>
       ))}

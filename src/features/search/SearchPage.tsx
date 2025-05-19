@@ -3,7 +3,6 @@ import { Container, Typography, Box, Alert } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { searchMovies, isApiError } from '../../api/omdb';
-import type { Movie } from '../../types/api';
 import { SearchInput } from './components/SearchInput';
 import { SearchResults } from './components/SearchResults';
 import { SearchPagination } from './components/SearchPagination';
@@ -29,7 +28,7 @@ export const SearchPage = () => {
   } = useQuery({
     queryKey: ['search', query, page],
     queryFn: () => searchMovies(query, page),
-    enabled: !!query,
+    enabled: query.length > 2,
   });
 
   // Handle search query changes
@@ -110,7 +109,7 @@ export const SearchPage = () => {
       )}
 
       <SearchResults
-        movies={(data?.Search || []) as Movie[]}
+        movies={data?.Search}
         loading={isLoading}
         onMovieSelect={handleMovieSelect}
       />
