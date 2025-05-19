@@ -19,11 +19,39 @@ export const SearchResults = ({ movies, loading, onMovieSelect }: SearchResultsP
         {[...Array(6)].map((_, index) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Skeleton variant="rectangular" height={200} animation="wave" />
+              <Skeleton
+                variant="rectangular"
+                height={400}
+                animation="wave"
+              />
               <CardContent>
-                <Skeleton width="60%" height={32} animation="wave" />
-                <Skeleton width="40%" height={24} animation="wave" sx={{ mt: 1 }} />
+                <Skeleton
+                  width="80%"
+                  height={32}
+                  animation="wave"
+                  sx={{  mb: 1.5 }}
+                />
+                <Skeleton
+                  width="40%"
+                  height={24}
+                  animation="wave"
+
+                />
               </CardContent>
+              <CardActions sx={{ mt: 'auto', p: 2}}>
+                <Skeleton
+                  variant="rounded"
+                  width={100}
+                  height={36}
+                  animation="wave"
+                />
+                <Skeleton
+                  variant="rounded"
+                  width={100}
+                  height={36}
+                  animation="wave"
+                />
+              </CardActions>
             </Card>
           </Grid>
         ))}
