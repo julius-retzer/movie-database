@@ -4,6 +4,7 @@ import { Box, Grid, Typography, Container, Paper, CircularProgress, Alert, Stack
 import { getMovieById } from '../../api/omdb';
 import { isApiError } from '../../types/api';
 import { FavoriteButton } from '../../components/FavoriteButton';
+import { MoviePoster } from '../../components/MoviePoster/MoviePoster';
 
 type MovieDetailPageProps = {
   id?: string;
@@ -50,17 +51,7 @@ export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
       <Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, mb: 4 }}>
         <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={4}>
           <Box flexShrink={0} sx={{ width: { xs: '100%', sm: '300px' }, mx: 'auto', position: 'relative' }}>
-            <Box
-              component="img"
-              src={movie.Poster !== 'N/A' ? movie.Poster : '/placeholder-movie.png'}
-              alt={`${movie.Title} poster`}
-              sx={{
-                width: '100%',
-                height: 'auto',
-                borderRadius: 2,
-                boxShadow: 3,
-              }}
-            />
+            <MoviePoster movie={movie} height={450} />
           </Box>
 
           <Box flexGrow={1}>
