@@ -14,12 +14,12 @@ export const Header = () => {
           variant="h6"
           component={RouterLink}
           to="/"
+          color="primary.contrastText"
           sx={{
             flexGrow: 1,
-            textDecoration: 'none',
-            color: 'inherit',
             '&:hover': {
-              opacity: 0.9,
+             textDecoration: 'underline',
+             color: 'primary.contrastText',
             },
           }}
         >
@@ -28,13 +28,14 @@ export const Header = () => {
 
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button
-            color="inherit"
             component={RouterLink}
+            variant='text'
             to="/"
             sx={{
               fontWeight: pathname === '/' ? 'bold' : 'normal',
+              color: 'primary.contrastText',
               '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                color: 'primary.contrastText',
               },
             }}
           >
@@ -42,8 +43,8 @@ export const Header = () => {
           </Button>
 
           <Button
-            color="inherit"
             component={RouterLink}
+            variant='text'
             to="/favorites"
             startIcon={
               <Badge badgeContent={favorites.length} color="error">
@@ -52,8 +53,9 @@ export const Header = () => {
             }
             sx={{
               fontWeight: pathname === '/favorites' ? 'bold' : 'normal',
+              color: 'primary.contrastText',
               '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                color: 'primary.contrastText',
               },
             }}
           >
