@@ -86,6 +86,7 @@ export const SearchPage = () => {
       <SearchInput
         onSearch={handleSearch}
         initialValue={query}
+        isLoading={isLoading}
         placeholder="Search for movies by title..."
       />
 

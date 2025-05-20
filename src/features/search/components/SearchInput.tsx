@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import { TextField, InputAdornment, IconButton, Button, Box, CircularProgress } from '@mui/material';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 
 type SearchInputProps = {
@@ -7,51 +7,39 @@ type SearchInputProps = {
   placeholder?: string;
   debounceTime?: number;
   initialValue?: string;
+  isLoading?: boolean;
 };
 
 export const SearchInput = ({
   onSearch,
   placeholder = 'Search for movies...',
-  debounceTime = 300,
   initialValue = '',
-}: SearchInputProps) => {
+  isLoading = false,
+}: Omit<SearchInputProps, 'debounceTime'>) => {
   const [inputValue, setInputValue] = useState(initialValue);
-  const [isTyping, setIsTyping] = useState(false);
 
   // Update internal state when initialValue changes
   useEffect(() => {
     setInputValue(initialValue);
   }, [initialValue]);
 
-  // Debounce the search callback
-  useEffect(() => {
-    if (!isTyping) return;
-
-    const timer = setTimeout(() => {
-      onSearch(inputValue);
-      setIsTyping(false);
-    }, debounceTime);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [inputValue, onSearch, debounceTime, isTyping]);
-
-  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-    setIsTyping(true);
-  }, []);
+  const handleSearch = useCallback(() => {
+    onSearch(inputValue.trim());
+  }, [inputValue, onSearch]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
         event.preventDefault();
-        onSearch(inputValue);
-        setIsTyping(false);
+        handleSearch();
       }
     },
-    [inputValue, onSearch]
+    [handleSearch]
   );
+
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  }, []);
 
   const handleClear = useCallback(() => {
     setInputValue('');
@@ -59,34 +47,53 @@ export const SearchInput = ({
   }, [onSearch]);
 
   return (
-    <TextField
-      fullWidth
-      variant="outlined"
-      placeholder={placeholder}
-      value={inputValue}
-      onChange={handleChange}
-      onKeyDown={handleKeyDown}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon color="action" />
-          </InputAdornment>
-        ),
-        endAdornment: inputValue && (
-          <InputAdornment position="end">
-            <IconButton edge="end" onClick={handleClear} size="small" aria-label="clear search">
-              <ClearIcon />
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-      sx={{
-        mb: 3,
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-          backgroundColor: 'background.paper',
-        },
-      }}
-    />
+    <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder={placeholder}
+        value={inputValue}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon color="action" />
+            </InputAdornment>
+          ),
+          endAdornment: inputValue && (
+            <InputAdornment position="end">
+              <IconButton edge="end" onClick={handleClear} size="small" aria-label="clear search">
+                <ClearIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+
+            backgroundColor: 'background.paper',
+          },
+        }}
+      />
+      <Button
+        variant="contained"
+        size="large"
+        color="primary"
+        onClick={handleSearch}
+        disabled={!inputValue.trim() || isLoading}
+        startIcon={isLoading ? null : <SearchIcon />}
+        sx={{ width: 200 }}
+      >
+        {isLoading ? (
+          <>
+            <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
+            Searching...
+          </>
+        ) : (
+          'Search'
+        )}
+      </Button>
+    </Box>
   );
 };
