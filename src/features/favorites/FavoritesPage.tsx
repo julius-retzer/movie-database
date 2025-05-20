@@ -1,4 +1,13 @@
-import { Box, Typography, Container, Paper, Grid, Button } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Container,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useFavorites } from '../../context/FavoritesContext';
 import { MoviePoster } from '../../components/MoviePoster/MoviePoster';
@@ -32,41 +41,41 @@ export const FavoritesPage = () => {
       <Grid container spacing={3} sx={{ mt: 2 }}>
         {favorites.map((movie) => (
           <Grid key={movie.imdbID} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <Paper
-              elevation={2}
+            <Card
               sx={{
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  transition: 'transform 0.2s',
-                },
-                cursor: 'pointer',
               }}
-              onClick={() => navigate(`/movie/${movie.imdbID}`)}
             >
-              <MoviePoster movie={movie} />
-              <Box sx={{ p: 2, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h6" component="div" noWrap>
-                  {movie.Title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 'auto', pt: 1 }}>
-                  {movie.Year} • {movie.Type}
-                </Typography>
-              </Box>
-              <Button
-                size="small"
-                color="error"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeFavorite(movie.imdbID);
-                }}
-                sx={{ m: 1, alignSelf: 'flex-start' }}
+              <Box
+                onClick={() => navigate(`/movie/${movie.imdbID}`)}
+                sx={{ cursor: 'pointer' }}
               >
-                Remove
-              </Button>
-            </Paper>
+                <MoviePoster movie={movie} />
+                <CardContent>
+                  <Typography variant="h6" component="div" noWrap>
+                    {movie.Title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    {movie.Year} • {movie.Type}
+                  </Typography>
+                </CardContent>
+              </Box>
+              <CardActions sx={{ mt: 'auto', p: 2 }}>
+                <Button
+                  size="small"
+                  color="error"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFavorite(movie.imdbID);
+                  }}
+                  sx={{ ml: 'auto' }}
+                >
+                  Remove
+                </Button>
+              </CardActions>
+            </Card>
           </Grid>
         ))}
       </Grid>

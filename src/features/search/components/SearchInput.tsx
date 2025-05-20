@@ -1,11 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { TextField, InputAdornment, IconButton, Button, Box, CircularProgress } from '@mui/material';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
+
+const searchSchema = z.object({
+  query: z.string().min(1, 'Search query is required').max(100, 'Query is too long'),
+});
+
+type SearchFormData = z.infer<typeof searchSchema>;
 
 type SearchInputProps = {
   onSearch: (query: string) => void;
   placeholder?: string;
-  debounceTime?: number;
   initialValue?: string;
   isLoading?: boolean;
 };
@@ -15,73 +23,81 @@ export const SearchInput = ({
   placeholder = 'Search for movies...',
   initialValue = '',
   isLoading = false,
-}: Omit<SearchInputProps, 'debounceTime'>) => {
-  const [inputValue, setInputValue] = useState(initialValue);
-
-  // Update internal state when initialValue changes
-  useEffect(() => {
-    setInputValue(initialValue);
-  }, [initialValue]);
-
-  const handleSearch = useCallback(() => {
-    onSearch(inputValue.trim());
-  }, [inputValue, onSearch]);
-
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        handleSearch();
-      }
+}: SearchInputProps) => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<SearchFormData>({
+    resolver: zodResolver(searchSchema),
+    defaultValues: {
+      query: initialValue,
     },
-    [handleSearch]
+  });
+
+  const queryValue = watch('query');
+
+  const onSubmit = useCallback(
+    (data: SearchFormData) => {
+      onSearch(data.query.trim());
+    },
+    [onSearch]
   );
 
-  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  }, []);
-
   const handleClear = useCallback(() => {
-    setInputValue('');
+    reset({ query: '' });
     onSearch('');
-  }, [onSearch]);
+  }, [onSearch, reset]);
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-      <TextField
-        fullWidth
-        variant="outlined"
-        placeholder={placeholder}
-        value={inputValue}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon color="action" />
-            </InputAdornment>
-          ),
-          endAdornment: inputValue && (
-            <InputAdornment position="end">
-              <IconButton edge="end" onClick={handleClear} size="small" aria-label="clear search">
-                <ClearIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        sx={{
-          '& .MuiOutlinedInput-root': {
-
-            backgroundColor: 'background.paper',
-          },
-        }}
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', gap: 2, mb: 3, width: '100%' }}>
+      <Controller
+        name="query"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            variant="outlined"
+            placeholder={placeholder}
+            error={!!errors.query}
+            helperText={errors.query?.message}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon color="action" />
+                </InputAdornment>
+              ),
+              endAdornment: field.value && (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    onClick={handleClear}
+                    size="small"
+                    aria-label="clear search"
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: 'background.paper',
+              },
+            }}
+          />
+        )}
       />
       <Button
+        type="submit"
         variant="contained"
         size="large"
         color="primary"
-        onClick={handleSearch}
-        disabled={!inputValue.trim() || isLoading}
+        disabled={!queryValue?.trim() || isLoading}
         startIcon={isLoading ? null : <SearchIcon />}
         sx={{ width: 200 }}
       >
