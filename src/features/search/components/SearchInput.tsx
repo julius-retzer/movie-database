@@ -1,114 +1,84 @@
 import { useCallback } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { TextField, InputAdornment, IconButton, Button, Box, CircularProgress } from '@mui/material';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 
-const searchSchema = z.object({
-  query: z.string().min(1, 'Search query is required').max(100, 'Query is too long'),
-});
-
-type SearchFormData = z.infer<typeof searchSchema>;
-
 type SearchInputProps = {
-  onSearch: (query: string) => void;
+  value: string;
+  onChange: (value: string) => void;
+  onSearch: () => void;
   placeholder?: string;
-  initialValue?: string;
+  error?: string;
   isLoading?: boolean;
 };
 
 export const SearchInput = ({
+  value,
+  onChange,
   onSearch,
   placeholder = 'Search for movies...',
-  initialValue = '',
+  error,
   isLoading = false,
 }: SearchInputProps) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm<SearchFormData>({
-    resolver: zodResolver(searchSchema),
-    defaultValues: {
-      query: initialValue,
-    },
-  });
-
-  const queryValue = watch('query');
-
-  const onSubmit = useCallback(
-    (data: SearchFormData) => {
-      onSearch(data.query.trim());
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        onSearch();
+      }
     },
     [onSearch]
   );
 
   const handleClear = useCallback(() => {
-    reset({ query: '' });
-    onSearch('');
-  }, [onSearch, reset]);
+    onChange('');
+  }, [onChange]);
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', gap: 2, mb: 3, width: '100%' }}>
-      <Controller
-        name="query"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            variant="outlined"
-            placeholder={placeholder}
-            error={!!errors.query}
-            helperText={errors.query?.message}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-              endAdornment: field.value && (
-                <InputAdornment position="end">
-                  <IconButton
-                    edge="end"
-                    onClick={handleClear}
-                    size="small"
-                    aria-label="clear search"
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: 'background.paper',
-              },
-            }}
-          />
-        )}
+    <Box sx={{ display: 'flex', gap: 2, mb: 3, width: '100%' }}>
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={handleKeyDown}
+        error={!!error}
+        helperText={error}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon color="action" />
+            </InputAdornment>
+          ),
+          endAdornment: value && (
+            <InputAdornment position="end">
+              <IconButton
+                edge="end"
+                onClick={handleClear}
+                size="small"
+                aria-label="clear search"
+              >
+                <ClearIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: 'background.paper',
+          },
+        }}
       />
       <Button
-        type="submit"
         variant="contained"
-        size="large"
         color="primary"
-        disabled={!queryValue?.trim() || isLoading}
-        startIcon={isLoading ? null : <SearchIcon />}
+        onClick={onSearch}
+        disabled={!value.trim() || isLoading}
+        startIcon={<SearchIcon />}
         sx={{ width: 200 }}
+        loading={isLoading}
       >
-        {isLoading ? (
-          <>
-            <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
-            Searching...
-          </>
-        ) : (
-          'Search'
-        )}
+        Search
       </Button>
     </Box>
   );

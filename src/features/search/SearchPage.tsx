@@ -1,23 +1,50 @@
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Container, Typography, Box, Alert } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { searchMovies, isApiError } from '../../api/omdb';
 import { SearchInput } from './components/SearchInput';
 import { SearchResults } from './components/SearchResults';
 import { SearchPagination } from './components/SearchPagination';
 
+const searchSchema = z.object({
+  query: z.string().min(3, 'Search query must be at least 3 characters long').max(100, 'Query is too long'),
+});
+
+type SearchFormData = z.infer<typeof searchSchema>;
+
 const ITEMS_PER_PAGE = 10;
 const MAX_PAGES = 100; // OMDb API limitation
 
 export const SearchPage = () => {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Get and validate query params
   const query = searchParams.get('q')?.trim() || '';
   const pageParam = searchParams.get('page');
   const page = Math.max(1, parseInt(pageParam || '1', 10) || 1);
+
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<SearchFormData>({
+    resolver: zodResolver(searchSchema),
+    defaultValues: {
+      query,
+    },
+  });
+
+  const queryValue = watch('query');
+
+  // Update form value when URL query changes
+  React.useEffect(() => {
+    setValue('query', query);
+  }, [query, setValue]);
 
   // Fetch movies data
   const { data, isLoading, isError, error } = useQuery({
@@ -26,25 +53,32 @@ export const SearchPage = () => {
     enabled: query.length > 2,
   });
 
-  // Handle search query changes
-  const handleSearch = useCallback(
-    (searchQuery: string) => {
-      const params = new URLSearchParams();
-      const trimmedQuery = searchQuery.trim();
+  // Handle search form submission
+  const onSubmit = useCallback(
+    (data: SearchFormData) => {
+      const trimmedQuery = data.query.trim();
+      if (!trimmedQuery) return;
 
-      if (trimmedQuery) {
-        params.set('q', trimmedQuery);
-        // Only reset page if it's a new search
-        if (trimmedQuery !== query) {
-          params.set('page', '1');
-        } else {
-          params.set('page', page.toString());
-        }
-      }
+      const params = new URLSearchParams();
+      params.set('q', trimmedQuery);
+      // Only reset page if it's a new search
+      params.set('page', trimmedQuery !== query ? '1' : page.toString());
       setSearchParams(params);
     },
     [query, page, setSearchParams]
   );
+
+  const handleSearch = useCallback(() => {
+    handleSubmit((data) => {
+      const trimmedQuery = data.query.trim();
+      if (!trimmedQuery) return;
+
+      const params = new URLSearchParams();
+      params.set('q', trimmedQuery);
+      params.set('page', trimmedQuery !== query ? '1' : page.toString());
+      setSearchParams(params);
+    })();
+  }, [handleSubmit, query, page, setSearchParams]);
 
   // Handle page changes
   const handlePageChange = useCallback(
@@ -83,16 +117,20 @@ export const SearchPage = () => {
         Movie Search
       </Typography>
 
-      <SearchInput
-        onSearch={handleSearch}
-        initialValue={query}
-        isLoading={isLoading}
-        placeholder="Search for movies by title..."
-      />
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%' }}>
+        <SearchInput
+          value={queryValue}
+          onChange={(value) => setValue('query', value, { shouldValidate: true })}
+          onSearch={handleSearch}
+          error={errors.query?.message}
+          isLoading={isLoading}
+          placeholder="Search for movies by title..."
+        />
+      </Box>
 
       {isError && errorMessage && (
         <Box mb={4}>
-          <Alert severity="error" sx={{ borderRadius: 2 }}>
+          <Alert severity="error">
             {errorMessage}
           </Alert>
         </Box>
