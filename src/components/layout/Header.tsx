@@ -1,68 +1,161 @@
-import { AppBar, Toolbar, Typography, Button, Box, Badge } from '@mui/material';
+import { useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useFavorites } from '../../context/FavoritesContext';
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Button,
+  Badge,
+  Stack,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import MovieIcon from '@mui/icons-material/Movie';
+import StarIcon from '@mui/icons-material/Star';
+import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-export const Header = () => {
+const drawerWidth = 240;
+const navItems = [
+  { name: 'Home', path: '/', icon: <HomeIcon /> },
+  {
+    name: 'Favorites',
+    path: '/favorites',
+    icon: <FavoriteIcon />,
+    badge: true,
+  },
+];
+
+interface Props {
+  window?: () => Window;
+}
+
+export const Header = (props: Props) => {
+  const { window } = props;
   const { pathname } = useLocation();
   const { favorites } = useFavorites();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        Movie DB
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton
+              component={RouterLink}
+              to={item.path}
+              selected={pathname === item.path}
+              sx={{
+                textAlign: 'center',
+                '&.Mui-selected': {
+                  backgroundColor: 'action.selected',
+                },
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, justifyContent: 'center' }}>
+                {item.badge ? (
+                  <Badge badgeContent={favorites.length} color="error">
+                    {item.icon}
+                  </Badge>
+                ) : (
+                  item.icon
+                )}
+              </ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <AppBar position="static" elevation={0}>
-      <Toolbar>
-        <Typography
-          variant="h6"
-          component={RouterLink}
-          to="/"
-          color="primary.contrastText"
+    <Box sx={{ display: 'flex' }}>
+      <AppBar component="nav" position="static" elevation={0}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Stack direction="row" justifyContent="space-between">
+            <Stack direction="row" spacing={1}>
+              <MovieIcon sx={{ display: { xs: 'none', sm: 'block' }, mr: 1 }} />
+              <Button
+                component={RouterLink}
+                to="/"
+                variant="text"
+                color="primary"
+                sx={{
+                  display: { xs: 'none', sm: 'block' },
+                }}
+              >
+                MOVIE DB
+              </Button>
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.name}
+                  component={RouterLink}
+                  to={item.path}
+                  variant="text"
+                  color="primary"
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Stack>
+          </Stack>
+        </Toolbar>
+      </AppBar>
+      <nav>
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile
+          }}
           sx={{
-            flexGrow: 1,
-            '&:hover': {
-             textDecoration: 'underline',
-             color: 'primary.contrastText',
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
             },
           }}
         >
-          Movie Database
-        </Typography>
-
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button
-            component={RouterLink}
-            variant='text'
-            to="/"
-            sx={{
-              fontWeight: pathname === '/' ? 'bold' : 'normal',
-              color: 'primary.contrastText',
-              '&:hover': {
-                color: 'primary.contrastText',
-              },
-            }}
-          >
-            Search
-          </Button>
-
-          <Button
-            component={RouterLink}
-            variant='text'
-            to="/favorites"
-            startIcon={
-              <Badge badgeContent={favorites.length} color="error">
-                <FavoriteIcon />
-              </Badge>
-            }
-            sx={{
-              fontWeight: pathname === '/favorites' ? 'bold' : 'normal',
-              color: 'primary.contrastText',
-              '&:hover': {
-                color: 'primary.contrastText',
-              },
-            }}
-          >
-            Favorites
-          </Button>
-        </Box>
-      </Toolbar>
-    </AppBar>
+          {drawer}
+        </Drawer>
+      </nav>
+    </Box>
   );
 };

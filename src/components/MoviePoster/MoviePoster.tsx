@@ -10,9 +10,7 @@ type MoviePosterProps = {
 const FALLBACK_IMAGE = 'https://placehold.co/200x300?text=No+Poster&font=roboto';
 
 export const MoviePoster = ({ movie, height = 400 }: MoviePosterProps) => {
-  const [imgSrc, setImgSrc] = useState(
-    movie.Poster !== 'N/A' ? movie.Poster : FALLBACK_IMAGE
-  );
+  const [imgSrc, setImgSrc] = useState(movie.Poster !== 'N/A' ? movie.Poster : FALLBACK_IMAGE);
 
   const handleError = () => {
     setImgSrc(FALLBACK_IMAGE);

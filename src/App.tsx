@@ -26,13 +26,43 @@ const queryClient = new QueryClient({
 // Create a theme instance
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
-      main: '#1976d2',
+      main: '#90caf9',
+      light: '#e3f2fd',
+      dark: '#42a5f5',
+      contrastText: 'rgba(0, 0, 0, 0.87)',
     },
     secondary: {
-      main: '#9c27b0',
+      main: '#ce93d8',
+      light: '#f3e5f5',
+      dark: '#ab47bc',
+      contrastText: 'rgba(0, 0, 0, 0.87)',
     },
+    background: {
+      default: '#121212',
+      paper: '#1e1e1e',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: 'rgba(255, 255, 255, 0.7)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
+    },
+    divider: 'rgba(255, 255, 255, 0.12)',
+  },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
   },
   components: {
     MuiButton: {
@@ -40,6 +70,17 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: 8,
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+          },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: 'linear-gradient(145deg, #1a1a1a 0%, #2c3e50 100%)',
+          boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.2)',
         },
       },
     },

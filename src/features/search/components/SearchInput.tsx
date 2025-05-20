@@ -42,13 +42,16 @@ export const SearchInput = ({
     setIsTyping(true);
   }, []);
 
-  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      onSearch(inputValue);
-      setIsTyping(false);
-    }
-  }, [inputValue, onSearch]);
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        onSearch(inputValue);
+        setIsTyping(false);
+      }
+    },
+    [inputValue, onSearch]
+  );
 
   const handleClear = useCallback(() => {
     setInputValue('');
@@ -71,12 +74,7 @@ export const SearchInput = ({
         ),
         endAdornment: inputValue && (
           <InputAdornment position="end">
-            <IconButton
-              edge="end"
-              onClick={handleClear}
-              size="small"
-              aria-label="clear search"
-            >
+            <IconButton edge="end" onClick={handleClear} size="small" aria-label="clear search">
               <ClearIcon />
             </IconButton>
           </InputAdornment>

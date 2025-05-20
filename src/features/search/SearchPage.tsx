@@ -20,12 +20,7 @@ export const SearchPage = () => {
   const page = Math.max(1, parseInt(pageParam || '1', 10) || 1);
 
   // Fetch movies data
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['search', query, page],
     queryFn: () => searchMovies(query, page),
     enabled: query.length > 2,
@@ -102,10 +97,7 @@ export const SearchPage = () => {
         </Box>
       )}
 
-      <SearchResults
-        movies={data?.Search}
-        loading={isLoading}
-      />
+      <SearchResults movies={data?.Search} loading={isLoading} />
 
       {totalPages > 1 && (
         <SearchPagination

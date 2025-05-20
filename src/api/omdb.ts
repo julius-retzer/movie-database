@@ -1,4 +1,4 @@
-import type { MovieSearchResponse,  MovieDetailResponse, ApiError } from '../types/api';
+import type { MovieSearchResponse, MovieDetailResponse, ApiError } from '../types/api';
 
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 

@@ -25,21 +25,27 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
   }, [favorites]);
 
-  const isFavorite = useCallback((id: string) => {
-    return favorites.some(movie => movie.imdbID === id);
-  }, [favorites]);
+  const isFavorite = useCallback(
+    (id: string) => {
+      return favorites.some((movie) => movie.imdbID === id);
+    },
+    [favorites]
+  );
 
-  const toggleFavorite = useCallback((movie: Movie) => {
-    setFavorites(prev => {
-      if (isFavorite(movie.imdbID)) {
-        return prev.filter(m => m.imdbID !== movie.imdbID);
-      }
-      return [...prev, movie];
-    });
-  }, [isFavorite]);
+  const toggleFavorite = useCallback(
+    (movie: Movie) => {
+      setFavorites((prev) => {
+        if (isFavorite(movie.imdbID)) {
+          return prev.filter((m) => m.imdbID !== movie.imdbID);
+        }
+        return [...prev, movie];
+      });
+    },
+    [isFavorite]
+  );
 
   const removeFavorite = useCallback((id: string) => {
-    setFavorites(prev => prev.filter(movie => movie.imdbID !== id));
+    setFavorites((prev) => prev.filter((movie) => movie.imdbID !== id));
   }, []);
 
   return (

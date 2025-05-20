@@ -1,6 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { Box, Grid, Typography, Container, Paper, CircularProgress, Alert, Stack, Chip, Divider } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  Paper,
+  CircularProgress,
+  Alert,
+  Stack,
+  Chip,
+  Divider,
+} from '@mui/material';
 import { getMovieById } from '../../api/omdb';
 import { isApiError } from '../../types/api';
 import { FavoriteButton } from '../../components/FavoriteButton';
@@ -14,7 +25,11 @@ export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
   const { id: paramId } = useParams<{ id: string }>();
   const movieId = propId || paramId || '';
 
-  const { data: movie, isLoading, error } = useQuery({
+  const {
+    data: movie,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['movie', movieId],
     queryFn: () => getMovieById(movieId),
     enabled: !!movieId,
@@ -45,43 +60,42 @@ export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
     );
   }
 
-
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, mb: 4 }}>
         <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={4}>
-          <Box flexShrink={0} sx={{ width: { xs: '100%', sm: '300px' }, mx: 'auto', position: 'relative' }}>
+          <Box
+            flexShrink={0}
+            sx={{ width: { xs: '100%', sm: '300px' }, mx: 'auto', position: 'relative' }}
+          >
             <MoviePoster movie={movie} height={450} />
           </Box>
 
           <Box flexGrow={1}>
-            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2} flexWrap="wrap" gap={2}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={2}
+              flexWrap="wrap"
+              gap={2}
+            >
               <Typography variant="h3" component="h1">
                 {movie.Title}
               </Typography>
               <FavoriteButton
-              movie={{
-                Title: movie.Title,
-                Year: movie.Year,
-                imdbID: movie.imdbID,
-                Type: movie.Type,
-                Poster: movie.Poster
-              }}
-              size="large"
-            />
-              <Chip
-                label={movie.Year}
-                color="primary"
-                variant="outlined"
-                size="small"
+                movie={{
+                  Title: movie.Title,
+                  Year: movie.Year,
+                  imdbID: movie.imdbID,
+                  Type: movie.Type,
+                  Poster: movie.Poster,
+                }}
+                size="large"
               />
+              <Chip label={movie.Year} color="primary" variant="outlined" size="small" />
               {movie.Rated && movie.Rated !== 'N/A' && (
-                <Chip
-                  label={movie.Rated}
-                  color="secondary"
-                  variant="outlined"
-                  size="small"
-                />
+                <Chip label={movie.Rated} color="secondary" variant="outlined" size="small" />
               )}
             </Box>
 
@@ -113,16 +127,20 @@ export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
 
             {movie.Ratings?.length > 0 && (
               <Box mt={3}>
-                <Typography variant="h6" gutterBottom>Ratings</Typography>
+                <Typography variant="h6" gutterBottom>
+                  Ratings
+                </Typography>
                 <Stack direction="row" flexWrap="wrap" gap={2}>
                   {movie.Ratings.map((rating) => (
-                    <Paper key={rating.Source} variant="outlined" sx={{ p: 1.5, minWidth: '120px' }}>
+                    <Paper
+                      key={rating.Source}
+                      variant="outlined"
+                      sx={{ p: 1.5, minWidth: '120px' }}
+                    >
                       <Typography variant="subtitle2" color="text.secondary">
                         {rating.Source}
                       </Typography>
-                      <Typography variant="h6">
-                        {rating.Value}
-                      </Typography>
+                      <Typography variant="h6">{rating.Value}</Typography>
                     </Paper>
                   ))}
                 </Stack>
@@ -148,9 +166,7 @@ const DetailItem = ({ label, value }: DetailItemProps) => {
       <Typography variant="subtitle2" color="text.secondary">
         {label}
       </Typography>
-      <Typography variant="body1">
-        {value}
-      </Typography>
+      <Typography variant="body1">{value}</Typography>
     </Box>
   );
 };

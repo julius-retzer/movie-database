@@ -16,12 +16,7 @@ export const FavoritesPage = () => {
         <Typography variant="body1" color="text.secondary" paragraph>
           You haven't added any movies to your favorites yet.
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/')}
-          sx={{ mt: 2 }}
-        >
+        <Button variant="contained" color="primary" onClick={() => navigate('/')} sx={{ mt: 2 }}>
           Browse Movies
         </Button>
       </Container>

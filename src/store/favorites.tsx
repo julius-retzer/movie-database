@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode  } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { MovieSearchResult } from '@/types/api';
 
 interface FavoritesContextType {

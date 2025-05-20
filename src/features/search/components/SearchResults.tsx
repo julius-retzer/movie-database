@@ -1,4 +1,14 @@
-import { Grid, Typography, Card, CardContent, CardActions, Skeleton, Box, Button, Stack } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  Skeleton,
+  Box,
+  Button,
+  Stack,
+} from '@mui/material';
 import { MoviePoster } from '../../../components/MoviePoster/MoviePoster';
 import type { Movie } from '../../../types/api';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +20,6 @@ type SearchResultsProps = {
 };
 
 export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
-
   const navigate = useNavigate();
 
   if (loading) {
@@ -19,38 +28,14 @@ export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
         {[...Array(6)].map((_, index) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Skeleton
-                variant="rectangular"
-                height={400}
-                animation="wave"
-              />
+              <Skeleton variant="rectangular" height={400} animation="wave" />
               <CardContent>
-                <Skeleton
-                  width="80%"
-                  height={32}
-                  animation="wave"
-                  sx={{  mb: 1.5 }}
-                />
-                <Skeleton
-                  width="40%"
-                  height={24}
-                  animation="wave"
-
-                />
+                <Skeleton width="80%" height={32} animation="wave" sx={{ mb: 1.5 }} />
+                <Skeleton width="40%" height={24} animation="wave" />
               </CardContent>
-              <CardActions sx={{ mt: 'auto', p: 2}}>
-                <Skeleton
-                  variant="rounded"
-                  width={100}
-                  height={36}
-                  animation="wave"
-                />
-                <Skeleton
-                  variant="rounded"
-                  width={100}
-                  height={36}
-                  animation="wave"
-                />
+              <CardActions sx={{ mt: 'auto', p: 2 }}>
+                <Skeleton variant="rounded" width={100} height={36} animation="wave" />
+                <Skeleton variant="rounded" width={100} height={36} animation="wave" />
               </CardActions>
             </Card>
           </Grid>
@@ -58,7 +43,6 @@ export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
       </Grid>
     );
   }
-
 
   if (!movies) {
     return null;
@@ -73,10 +57,10 @@ export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
       </Box>
     );
   }
-console.log(movies);
+  console.log(movies);
 
   return (
-    <Grid container spacing={3}  sx={{ mt: 2 }}>
+    <Grid container spacing={3} sx={{ mt: 2 }}>
       {movies.map((movie) => (
         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={movie.imdbID}>
           <Card sx={{ height: '100%' }}>
