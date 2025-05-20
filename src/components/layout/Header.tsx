@@ -4,7 +4,6 @@ import { useFavorites } from '../../context/FavoritesContext';
 import {
   AppBar,
   Box,
-  CssBaseline,
   Divider,
   Drawer,
   IconButton,
@@ -21,7 +20,6 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import MovieIcon from '@mui/icons-material/Movie';
-import StarIcon from '@mui/icons-material/Star';
 import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -105,20 +103,12 @@ export const Header = (props: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Stack direction="row" justifyContent="space-between">
-            <Stack direction="row" spacing={1}>
+          <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
+            <Stack direction="row" spacing={1} alignItems="center">
               <MovieIcon sx={{ display: { xs: 'none', sm: 'block' }, mr: 1 }} />
-              <Button
-                component={RouterLink}
-                to="/"
-                variant="text"
-                color="primary"
-                sx={{
-                  display: { xs: 'none', sm: 'block' },
-                }}
-              >
-                MOVIE DB
-              </Button>
+              <Typography variant="h6" sx={{ my: 2 }}>
+                Movie DB
+              </Typography>
             </Stack>
             <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
@@ -128,6 +118,11 @@ export const Header = (props: Props) => {
                   to={item.path}
                   variant="text"
                   color="primary"
+                  sx={{
+                    '&:hover': {
+                      // color: 'initial',
+                    },
+                  }}
                 >
                   {item.name}
                 </Button>

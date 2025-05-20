@@ -70,8 +70,15 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: 8,
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
           '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            color: 'inherit',
           },
         },
       },

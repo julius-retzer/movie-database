@@ -7,7 +7,6 @@ import {
   Skeleton,
   Box,
   Button,
-  Stack,
 } from '@mui/material';
 import { MoviePoster } from '../../../components/MoviePoster/MoviePoster';
 import type { Movie } from '../../../types/api';
