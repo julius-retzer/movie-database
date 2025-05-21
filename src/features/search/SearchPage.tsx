@@ -14,11 +14,11 @@ import {
   Stack,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
 import { searchMovies, isApiError } from '../../api/omdb';
 import { SearchResults } from './components/SearchResults';
 import { SearchPagination } from './components/SearchPagination';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { useSearchParamsState } from './hooks/useSearchParamsState';
 
 const MIN_CHARACTERS = 3;
 const MAX_CHARACTERS = 100;
@@ -36,12 +36,7 @@ const ITEMS_PER_PAGE = 10;
 const MAX_PAGES = 100; // OMDb API limitation
 
 export const SearchPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  // Get and validate query params
-  const query = searchParams.get('q')?.trim() || '';
-  const pageParam = searchParams.get('page');
-  const page = Math.max(1, parseInt(pageParam || '1', 10) || 1);
+  const { query, page, setSearchParams, handlePageChange } = useSearchParamsState();
 
   const {
     handleSubmit,
@@ -77,28 +72,11 @@ export const SearchPage = () => {
       const trimmedQuery = data.query.trim();
       if (!trimmedQuery) return;
 
-      const params = new URLSearchParams();
-      params.set('q', trimmedQuery);
       // Only reset page if it's a new search
-      params.set('page', trimmedQuery !== query ? '1' : page.toString());
-      setSearchParams(params);
+      const newPage = trimmedQuery !== query ? 1 : page;
+      setSearchParams({ query: trimmedQuery, page: newPage });
     },
     [query, page, setSearchParams]
-  );
-
-  // Handle page changes
-  const handlePageChange = useCallback(
-    (newPage: number) => {
-      if (newPage < 1 || newPage > MAX_PAGES) return;
-
-      const params = new URLSearchParams(searchParams);
-      params.set('page', newPage.toString());
-      setSearchParams(params);
-
-      // Scroll to top when changing pages
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
-    [searchParams, setSearchParams]
   );
   // Calculate total pages
   const totalPages = useMemo(() => {

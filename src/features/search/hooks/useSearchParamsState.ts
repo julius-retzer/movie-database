@@ -1,0 +1,47 @@
+import { useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
+type UseSearchParamsStateReturn = {
+  query: string;
+  page: number;
+  setSearchParams: (params: { query: string; page: number }) => void;
+  handlePageChange: (newPage: number) => void;
+};
+
+export const useSearchParamsState = (): UseSearchParamsStateReturn => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get and validate query params
+  const query = useMemo(() => searchParams.get('q')?.trim() || '', [searchParams]);
+  const page = useMemo(() => {
+    const pageParam = searchParams.get('page');
+    return Math.max(1, parseInt(pageParam || '1', 10) || 1);
+  }, [searchParams]);
+
+  const updateSearchParams = useCallback(
+    ({ query: newQuery, page: newPage }: { query: string; page: number }) => {
+      const params = new URLSearchParams();
+      if (newQuery) params.set('q', newQuery);
+      params.set('page', newPage.toString());
+      setSearchParams(params);
+    },
+    [setSearchParams]
+  );
+
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      if (newPage < 1) return;
+      updateSearchParams({ query, page: newPage });
+      // Scroll to top when changing pages
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [query, updateSearchParams]
+  );
+
+  return {
+    query,
+    page,
+    setSearchParams: updateSearchParams,
+    handlePageChange,
+  };
+};
