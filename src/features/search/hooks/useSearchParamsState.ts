@@ -1,10 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-type UseSearchParamsStateReturn = {
+type Params = {
   query: string;
   page: number;
-  setSearchParams: (params: { query: string; page: number }) => void;
+};
+type UseSearchParamsStateReturn = {
+  params: Params;
+  setSearchParams: (params: Params) => void;
   handlePageChange: (newPage: number) => void;
 };
 
@@ -19,7 +22,7 @@ export const useSearchParamsState = (): UseSearchParamsStateReturn => {
   }, [searchParams]);
 
   const updateSearchParams = useCallback(
-    ({ query: newQuery, page: newPage }: { query: string; page: number }) => {
+    ({ query: newQuery, page: newPage }: Params) => {
       const params = new URLSearchParams();
       if (newQuery) params.set('q', newQuery);
       params.set('page', newPage.toString());
@@ -39,8 +42,7 @@ export const useSearchParamsState = (): UseSearchParamsStateReturn => {
   );
 
   return {
-    query,
-    page,
+    params: { query, page },
     setSearchParams: updateSearchParams,
     handlePageChange,
   };

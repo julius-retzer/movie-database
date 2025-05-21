@@ -36,7 +36,8 @@ const ITEMS_PER_PAGE = 10;
 const MAX_PAGES = 100; // OMDb API limitation
 
 export const SearchPage = () => {
-  const { query, page, setSearchParams, handlePageChange } = useSearchParamsState();
+  const { params, setSearchParams, handlePageChange } = useSearchParamsState();
+  const { query, page } = params;
 
   const {
     handleSubmit,
@@ -49,7 +50,6 @@ export const SearchPage = () => {
     defaultValues: {
       query,
     },
-    mode: 'onChange',
   });
 
   const queryValue = watch('query');
