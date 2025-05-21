@@ -11,6 +11,7 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  Stack,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -41,14 +42,17 @@ export const SearchPage = () => {
 
   const {
     handleSubmit,
+    register,
+    reset,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors: validationErrors },
   } = useForm<SearchFormData>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
       query,
     },
+    mode: 'onChange',
   });
 
   const queryValue = watch('query');
@@ -59,7 +63,12 @@ export const SearchPage = () => {
   }, [query, setValue]);
 
   // Fetch movies data
-  const { data, isLoading, isError, error } = useQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    error: apiErrors,
+  } = useQuery({
     queryKey: ['search', query, page],
     queryFn: () => searchMovies(query, page),
     enabled: query.length > 2,
@@ -79,18 +88,6 @@ export const SearchPage = () => {
     },
     [query, page, setSearchParams]
   );
-
-  const handleSearch = useCallback(() => {
-    handleSubmit((data) => {
-      const trimmedQuery = data.query.trim();
-      if (!trimmedQuery) return;
-
-      const params = new URLSearchParams();
-      params.set('q', trimmedQuery);
-      params.set('page', trimmedQuery !== query ? '1' : page.toString());
-      setSearchParams(params);
-    })();
-  }, [handleSubmit, query, page, setSearchParams]);
 
   // Handle page changes
   const handlePageChange = useCallback(
@@ -113,15 +110,15 @@ export const SearchPage = () => {
   }, [data?.totalResults]);
 
   // Show error message
-  const errorMessage = useMemo(() => {
+  const apiErrorMessage = useMemo(() => {
     if (!isError) return null;
 
-    if (isApiError(error)) {
-      return error.message;
+    if (isApiError(apiErrors)) {
+      return apiErrors.message;
     }
 
     return 'Failed to fetch movies. Please try again later.';
-  }, [isError, error]);
+  }, [isError, apiErrors]);
 
   return (
     <Container maxWidth="lg" fixed sx={{ py: 4, height: '100vh' }}>
@@ -130,17 +127,16 @@ export const SearchPage = () => {
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%' }}>
-        <Box sx={{ display: 'flex', gap: 2, mb: 3, width: '100%' }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search for movies by title..."
-            value={queryValue}
-            onChange={(e) => setValue('query', e.target.value)}
-            error={!!errorMessage}
-            helperText={errorMessage}
-            slotProps={{
-              input: {
+        <Box sx={{ minHeight: 80, width: '100%' }}>
+          <Stack  direction="row" spacing={2} sx={{width: '100%' }}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Search for movies by title..."
+              error={!!validationErrors.query}
+              helperText={validationErrors.query?.message}
+              {...register('query')}
+              InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <SearchIcon color="action" />
@@ -150,7 +146,7 @@ export const SearchPage = () => {
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
-                      onClick={() => setValue('query', '')}
+                      onClick={() => reset()}
                       size="small"
                       aria-label="clear search"
                     >
@@ -158,31 +154,32 @@ export const SearchPage = () => {
                     </IconButton>
                   </InputAdornment>
                 ),
-              },
-            }}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: 'background.paper',
-              },
-            }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={!queryValue.trim()}
-            startIcon={<SearchIcon />}
-            sx={{ width: 200 }}
-            loading={isLoading}
-            type="submit"
-          >
-            Search
-          </Button>
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: 'background.paper',
+                },
+              }}
+            />
+
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={!queryValue.trim()}
+              startIcon={<SearchIcon />}
+              sx={{ width: 200, height: 56 }}
+              loading={isLoading}
+              type="submit"
+            >
+              Search
+            </Button>
+          </Stack>
         </Box>
       </Box>
 
-      {isError && errorMessage && (
+      {isError && apiErrorMessage && (
         <Box mb={4}>
-          <Alert severity="error">{errorMessage}</Alert>
+          <Alert severity="error">{apiErrorMessage}</Alert>
         </Box>
       )}
 
