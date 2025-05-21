@@ -48,10 +48,7 @@ export const FavoritesPage = () => {
                 flexDirection: 'column',
               }}
             >
-              <Box
-                onClick={() => navigate(`/movie/${movie.imdbID}`)}
-                sx={{ cursor: 'pointer' }}
-              >
+              <Box onClick={() => navigate(`/movie/${movie.imdbID}`)} sx={{ cursor: 'pointer' }}>
                 <MoviePoster movie={movie} />
                 <CardContent>
                   <Typography variant="h6" component="div" noWrap>

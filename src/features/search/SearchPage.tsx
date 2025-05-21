@@ -2,16 +2,28 @@ import React, { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Container, Typography, Box, Alert } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Box,
+  Alert,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { searchMovies, isApiError } from '../../api/omdb';
-import { SearchInput } from './components/SearchInput';
 import { SearchResults } from './components/SearchResults';
 import { SearchPagination } from './components/SearchPagination';
+import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 
 const searchSchema = z.object({
-  query: z.string().min(3, 'Search query must be at least 3 characters long').max(100, 'Query is too long'),
+  query: z
+    .string()
+    .min(3, 'Search query must be at least 3 characters long')
+    .max(100, 'Query is too long'),
 });
 
 type SearchFormData = z.infer<typeof searchSchema>;
@@ -118,21 +130,59 @@ export const SearchPage = () => {
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%' }}>
-        <SearchInput
-          value={queryValue}
-          onChange={(value) => setValue('query', value, { shouldValidate: true })}
-          onSearch={handleSearch}
-          error={errors.query?.message}
-          isLoading={isLoading}
-          placeholder="Search for movies by title..."
-        />
+        <Box sx={{ display: 'flex', gap: 2, mb: 3, width: '100%' }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search for movies by title..."
+            value={queryValue}
+            onChange={(e) => setValue('query', e.target.value)}
+            error={!!errorMessage}
+            helperText={errorMessage}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+                endAdornment: queryValue && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      edge="end"
+                      onClick={() => setValue('query', '')}
+                      size="small"
+                      aria-label="clear search"
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: 'background.paper',
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!queryValue.trim()}
+            startIcon={<SearchIcon />}
+            sx={{ width: 200 }}
+            loading={isLoading}
+            type="submit"
+          >
+            Search
+          </Button>
+        </Box>
       </Box>
 
       {isError && errorMessage && (
         <Box mb={4}>
-          <Alert severity="error">
-            {errorMessage}
-          </Alert>
+          <Alert severity="error">{errorMessage}</Alert>
         </Box>
       )}
 
