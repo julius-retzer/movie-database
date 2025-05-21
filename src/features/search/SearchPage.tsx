@@ -20,11 +20,14 @@ import { SearchResults } from './components/SearchResults';
 import { SearchPagination } from './components/SearchPagination';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 
+const MIN_CHARACTERS = 3;
+const MAX_CHARACTERS = 100;
+
 const searchSchema = z.object({
   query: z
     .string()
-    .min(3, 'Search query must be at least 3 characters long')
-    .max(100, 'Query is too long'),
+    .min(MIN_CHARACTERS, `Search query must be at least ${MIN_CHARACTERS} characters long`)
+    .max(MAX_CHARACTERS, `Query is too long`),
 });
 
 type SearchFormData = z.infer<typeof searchSchema>;
@@ -44,7 +47,6 @@ export const SearchPage = () => {
     handleSubmit,
     register,
     reset,
-    setValue,
     watch,
     formState: { errors: validationErrors },
   } = useForm<SearchFormData>({
@@ -57,21 +59,16 @@ export const SearchPage = () => {
 
   const queryValue = watch('query');
 
-  // Update form value when URL query changes
-  React.useEffect(() => {
-    setValue('query', query);
-  }, [query, setValue]);
-
   // Fetch movies data
   const {
     data,
     isLoading,
     isError,
-    error: apiErrors,
+    error: apiError,
   } = useQuery({
     queryKey: ['search', query, page],
     queryFn: () => searchMovies(query, page),
-    enabled: query.length > 2,
+    enabled: query.length >= MIN_CHARACTERS,
   });
 
   // Handle search form submission
@@ -113,12 +110,12 @@ export const SearchPage = () => {
   const apiErrorMessage = useMemo(() => {
     if (!isError) return null;
 
-    if (isApiError(apiErrors)) {
-      return apiErrors.message;
+    if (isApiError(apiError)) {
+      return apiError.message;
     }
 
     return 'Failed to fetch movies. Please try again later.';
-  }, [isError, apiErrors]);
+  }, [isError, apiError]);
 
   return (
     <Container maxWidth="lg" fixed sx={{ py: 4, height: '100vh' }}>
