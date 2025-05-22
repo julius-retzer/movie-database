@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { MoviePoster } from '../../../components/MoviePoster/MoviePoster';
+import { MoviePoster } from '../../../components/MoviePoster';
 import type { MovieDetail } from '../../../types/api';
 
 type PosterSectionProps = {

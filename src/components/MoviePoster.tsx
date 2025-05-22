@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CardMedia } from '@mui/material';
-import type { Movie } from '../../types/api';
+import type { Movie } from '../types/api';
 
 type MoviePosterProps = {
   movie: Pick<Movie, 'Poster' | 'Title'>;

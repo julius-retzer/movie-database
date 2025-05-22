@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { useFavorites } from '../../context/FavoritesContext';
+import { useFavorites } from '../features/favorites/hooks/useFavorites';
 import {
   AppBar,
   Box,
@@ -34,12 +34,7 @@ const navItems = [
   },
 ];
 
-interface Props {
-  window?: () => Window;
-}
-
-export const Header = (props: Props) => {
-  const { window } = props;
+export const Header = () => {
   const { pathname } = useLocation();
   const { favorites } = useFavorites();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -88,7 +83,7 @@ export const Header = (props: Props) => {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window.document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -118,11 +113,6 @@ export const Header = (props: Props) => {
                   to={item.path}
                   variant="text"
                   color="primary"
-                  sx={{
-                    '&:hover': {
-                      // color: 'initial',
-                    },
-                  }}
                 >
                   {item.name}
                 </Button>
@@ -138,7 +128,7 @@ export const Header = (props: Props) => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },

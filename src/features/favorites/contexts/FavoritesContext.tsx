@@ -1,5 +1,5 @@
-import { createContext, useContext, type ReactNode, useState, useCallback, useEffect } from 'react';
-import type { Movie } from '../types/api';
+import { createContext, type ReactNode, useState, useCallback, useEffect } from 'react';
+import type { Movie } from '../../../types/api';
 
 type FavoritesContextType = {
   favorites: Movie[];
@@ -8,7 +8,7 @@ type FavoritesContextType = {
   removeFavorite: (id: string) => void;
 };
 
-const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
+export const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 const FAVORITES_KEY = 'movie-app-favorites';
 
@@ -55,10 +55,3 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useFavorites = () => {
-  const context = useContext(FavoritesContext);
-  if (context === undefined) {
-    throw new Error('useFavorites must be used within a FavoritesProvider');
-  }
-  return context;
-};

@@ -8,10 +8,10 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import { MoviePoster } from '../../../components/MoviePoster/MoviePoster';
+import { MoviePoster } from '../../../components/MoviePoster';
 import type { Movie } from '../../../types/api';
 import { useNavigate } from 'react-router-dom';
-import { FavoriteButton } from '../../../components/FavoriteButton';
+import { FavoriteButton } from '../../favorites/components/FavoriteButton';
 
 type SearchResultsProps = {
   movies?: Movie[];
@@ -56,7 +56,6 @@ export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
       </Box>
     );
   }
-  console.log(movies);
 
   return (
     <Grid container spacing={3} sx={{ mt: 2 }}>

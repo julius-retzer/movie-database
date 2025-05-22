@@ -1,5 +1,5 @@
-import { useFavorites } from '../context/FavoritesContext';
-import { type Movie } from '../types/api';
+import { useFavorites } from '../hooks/useFavorites';
+import { type Movie } from '../../../types/api';
 import { IconButton, Tooltip } from '@mui/material';
 import { Star as StarIcon, StarBorder as StarBorderIcon } from '@mui/icons-material';
 

@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useFavorites } from '../../context/FavoritesContext';
-import { MoviePoster } from '../../components/MoviePoster/MoviePoster';
+import { useFavorites } from './hooks/useFavorites';
+import { MoviePoster } from '../../components/MoviePoster';
 
 export const FavoritesPage = () => {
   const { favorites, removeFavorite } = useFavorites();
