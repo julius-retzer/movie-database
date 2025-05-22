@@ -17,13 +17,9 @@ import { isApiError } from '../../types/api';
 import { FavoriteButton } from '../../components/FavoriteButton';
 import { MoviePoster } from '../../components/MoviePoster/MoviePoster';
 
-type MovieDetailPageProps = {
-  id?: string;
-};
-
-export const MovieDetailPage = ({ id: propId }: MovieDetailPageProps) => {
+export const MovieDetailPage = () => {
   const { id: paramId } = useParams<{ id: string }>();
-  const movieId = propId || paramId || '';
+  const movieId = paramId || '';
 
   const {
     data: movie,
