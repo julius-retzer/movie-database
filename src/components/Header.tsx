@@ -59,7 +59,7 @@ export const Header = () => {
           },
         }}
       >
-        Movie DB
+        Movie Database
       </Typography>
       <Divider />
       <List>
@@ -69,15 +69,6 @@ export const Header = () => {
               component={RouterLink}
               to={item.path}
               selected={pathname === item.path}
-              sx={{
-                textAlign: 'center',
-                '&.Mui-selected': {
-                  backgroundColor: 'action.selected',
-                },
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                },
-              }}
             >
               <ListItemIcon sx={{ minWidth: 40, justifyContent: 'center' }}>
                 {item.badge ? (
