@@ -20,7 +20,7 @@ describe('Movie Search', () => {
     cy.get('[data-testid="search-button"]').click();
 
     // Wait for results to load and verify they appear
-    cy.get('[data-testid="movie-card"]', { timeout: 10000 }).should('be.visible');
+    cy.get('[data-testid="movie-card"]').should('be.visible');
     cy.get('[data-testid="movie-card"]').should('have.length.at.least', 1);
 
     // Verify that search results contain the search term (case insensitive)
@@ -35,8 +35,8 @@ describe('Movie Search', () => {
     cy.get('[data-testid="search-input"]').type('Batman');
     cy.get('[data-testid="search-button"]').click();
 
-    // Wait for results and click on the first movie
-    cy.get('[data-testid="movie-card"]', { timeout: 10000 }).first().click();
+    // Wait for results and click on the 'View Details' button of the first movie
+    cy.get('[data-testid="movie-card"]').first().find('button').contains('View Details').click();
 
     // Verify we've navigated to the details page
     cy.url().should('include', '/movie/');

@@ -32,7 +32,7 @@ export const MovieDetailPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, mb: 4 }}>
+      <Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, mb: 4 }} data-testid="movie-details">
         <Stack direction={{ xs: 'column', sm: 'row' }} gap={4}>
           <PosterSection movie={movie} />
           <MovieContent movie={movie} />

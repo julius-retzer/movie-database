@@ -105,6 +105,7 @@ export const SearchPage = () => {
               error={!!validationErrors.query}
               helperText={validationErrors.query?.message}
               {...register('query')}
+              data-testid="search-input"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -137,6 +138,7 @@ export const SearchPage = () => {
               sx={{ width: 200, height: 56 }}
               loading={isLoading}
               type="submit"
+              data-testid="search-button"
             >
               Search
             </Button>
