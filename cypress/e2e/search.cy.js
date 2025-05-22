@@ -44,4 +44,13 @@ describe('Movie Search', () => {
     // Verify the movie details are displayed
     cy.get('[data-testid="movie-details"]').should('exist');
   });
+
+  it('should handle empty search results gracefully', () => {
+    // Type a search term that likely won't return results
+    cy.get('[data-testid="search-input"]').type('xyznonexistentmovie123456789');
+    cy.get('[data-testid="search-button"]').click();
+
+    // Check for no results message
+    cy.contains('Movie not found!').should('be.visible');
+  });
 });
