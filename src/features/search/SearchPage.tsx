@@ -33,7 +33,6 @@ const searchSchema = z.object({
 type SearchFormData = z.infer<typeof searchSchema>;
 
 const ITEMS_PER_PAGE = 10;
-const MAX_PAGES = 100;
 
 const SearchPage = () => {
   const { params, setSearchParams, handlePageChange } = useSearchParamsState();
@@ -75,7 +74,7 @@ const SearchPage = () => {
   // Calculate total pages
   const totalPages = useMemo(() => {
     if (!data?.totalResults) return 0;
-    return Math.min(Math.ceil(parseInt(data.totalResults, 10) / ITEMS_PER_PAGE), MAX_PAGES);
+    return Math.ceil(parseInt(data.totalResults, 10) / ITEMS_PER_PAGE);
   }, [data?.totalResults]);
 
   // Show error message
