@@ -1,18 +1,21 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline, ThemeProvider, createTheme, CircularProgress } from '@mui/material';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { FavoritesProvider } from './features/favorites/contexts/FavoritesContext';
+import { lazy, Suspense } from 'react';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { SearchPage } from './features/search/SearchPage';
-import { MovieDetailPage } from './features/movie/MovieDetailPage';
-import { FavoritesPage } from './features/favorites/FavoritesPage';
 import { Header } from './components/Header';
+
+// Lazy load page components
+const SearchPage = lazy(() => import('./features/search/SearchPage'));
+const MovieDetailPage = lazy(() => import('./features/movie/MovieDetailPage'));
+const FavoritesPage = lazy(() => import('./features/favorites/FavoritesPage'));
 
 // Create a client
 const queryClient = new QueryClient({
@@ -103,12 +106,18 @@ function App() {
         <BrowserRouter>
           <FavoritesProvider>
             <Header />
-            <Routes>
-              <Route path="/" element={<SearchPage />} />
-              <Route path="/movie/:id" element={<MovieDetailPage />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <Suspense fallback={
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+                <CircularProgress size={60} />
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<SearchPage />} />
+                <Route path="/movie/:id" element={<MovieDetailPage />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
           </FavoritesProvider>
         </BrowserRouter>
       </ThemeProvider>

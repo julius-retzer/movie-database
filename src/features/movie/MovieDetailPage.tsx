@@ -9,7 +9,7 @@ import { PosterSection } from './components/PosterSection';
 import { MovieContent } from './components/MovieContent';
 import { LoadingState, ErrorState, NoDataState } from './components/StatusComponents';
 
-export const MovieDetailPage = () => {
+const MovieDetailPage = () => {
   const { id: paramId } = useParams<{ id: string }>();
   const movieId = paramId || '';
 
@@ -41,3 +41,5 @@ export const MovieDetailPage = () => {
     </Container>
   );
 };
+
+export default MovieDetailPage;

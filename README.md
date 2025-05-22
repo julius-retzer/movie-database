@@ -8,6 +8,7 @@ A modern React application for searching and managing your favorite movies. Buil
 - **Movie Details**: View comprehensive information about each movie
 - **Favorites Management**: Save and manage your favorite movies
 - **Responsive Design**: Works on desktop and mobile devices
+- **Code Splitting**: Each feature (Search, Detail, Favorites) loads on demand for improved performance
 
 ## Tech Stack
 

@@ -35,7 +35,7 @@ type SearchFormData = z.infer<typeof searchSchema>;
 const ITEMS_PER_PAGE = 10;
 const MAX_PAGES = 100;
 
-export const SearchPage = () => {
+const SearchPage = () => {
   const { params, setSearchParams, handlePageChange } = useSearchParamsState();
   const { query, page } = params;
 
@@ -165,3 +165,5 @@ export const SearchPage = () => {
     </Container>
   );
 };
+
+export default SearchPage;

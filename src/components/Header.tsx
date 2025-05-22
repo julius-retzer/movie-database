@@ -45,7 +45,20 @@ export const Header = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography
+        variant="h6"
+        component={RouterLink}
+        to="/"
+        sx={{
+          my: 2,
+          color: 'inherit',
+          textDecoration: 'none',
+          display: 'block',
+          '&:hover': {
+            color: 'primary.light',
+          },
+        }}
+      >
         Movie DB
       </Typography>
       <Divider />
@@ -101,7 +114,19 @@ export const Header = () => {
           <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <MovieIcon sx={{ display: { xs: 'none', sm: 'block' }, mr: 1 }} />
-              <Typography variant="h6" sx={{ my: 2 }}>
+              <Typography
+                variant="h6"
+                component={RouterLink}
+                to="/"
+                sx={{
+                  my: 2,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  '&:hover': {
+                    color: 'primary.light',
+                  },
+                }}
+              >
                 Movie DB
               </Typography>
             </Stack>

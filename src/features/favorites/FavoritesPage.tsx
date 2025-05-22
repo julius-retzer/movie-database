@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFavorites } from './hooks/useFavorites';
 import { MoviePoster } from '../../components/MoviePoster';
 
-export const FavoritesPage = () => {
+const FavoritesPage = () => {
   const { favorites, removeFavorite } = useFavorites();
   const navigate = useNavigate();
 
@@ -79,3 +79,5 @@ export const FavoritesPage = () => {
     </Container>
   );
 };
+
+export default FavoritesPage;
