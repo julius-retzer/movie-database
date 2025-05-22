@@ -115,7 +115,10 @@ export const SearchPage = () => {
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
-                      onClick={() => reset()}
+                      onClick={() => {
+                        setSearchParams({ query: '', page: 1 });
+                        reset({query: ''});
+                      }}
                       size="small"
                       aria-label="clear search"
                     >
@@ -123,11 +126,6 @@ export const SearchPage = () => {
                     </IconButton>
                   </InputAdornment>
                 ),
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'background.paper',
-                },
               }}
             />
 
