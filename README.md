@@ -22,7 +22,7 @@ A modern React application for searching and managing your favorite movies. Buil
 ## Prerequisites
 
 - Node.js (v18 or newer)
-- pnpm (v9.15.4 or newer)
+- pnpm (v9.15.4 or newer, but you should be able to also use npm or yarn)
 
 ## Getting Started
 
@@ -80,7 +80,7 @@ pnpm test:e2e
 
 ## Testing
 
-The application includes comprehensive end-to-end tests using Cypress. The tests are organized by feature to ensure maintainability and clarity.
+The application includes end-to-end tests using Cypress. The tests don't cover 100% of the application, but they showcase how to use e2e testing with React and Cypress.
 
 ### Test Structure
 
@@ -98,10 +98,10 @@ cypress/
 
 You can run the tests using the following commands:
 
-- **Interactive Mode**: `pnpm cypress:open` - Opens the Cypress Test Runner UI where you can select and run tests with a visual interface.
-  
-- **Headless Mode**: `pnpm cypress:run` - Runs all tests in the terminal without a UI.
-  
+- **Interactive Mode**: `pnpm cypress:open` - Opens the Cypress Test Runner UI where you can select and run tests with a visual interface. Requires dev server to be running.
+
+- **Headless Mode**: `pnpm cypress:run` - Runs all tests in the terminal without a UI. Requires dev server to be running.
+
 - **End-to-End with Server**: `pnpm test:e2e` - Starts the development server and runs all tests against it.
 
 ## Application Structure
@@ -114,6 +114,6 @@ src/
 │   ├── search/        # Movie search feature
 │   └── favorites/     # Favorites management feature
 ├── types/             # TypeScript type definitions
-├── api/               # API and other services
+├── api/               # API services
 └── App.tsx            # Main application component
 ```
