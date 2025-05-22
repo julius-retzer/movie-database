@@ -67,13 +67,11 @@ export const SearchPage = () => {
   });
 
   // Handle search form submission
-  const onSubmit = handleSubmit(
-    (data) => {
-      // Only reset page if it's a new search
-      const newPage = data.query !== query ? 1 : page;
-      setSearchParams({ query: data.query, page: newPage });
-    }
-  );
+  const onSubmit = handleSubmit((data) => {
+    // Only reset page if it's a new search
+    const newPage = data.query !== query ? 1 : page;
+    setSearchParams({ query: data.query, page: newPage });
+  });
   // Calculate total pages
   const totalPages = useMemo(() => {
     if (!data?.totalResults) return 0;
@@ -99,7 +97,7 @@ export const SearchPage = () => {
 
       <Box component="form" onSubmit={onSubmit} sx={{ width: '100%' }}>
         <Box sx={{ minHeight: 80, width: '100%' }}>
-          <Stack  direction="row" spacing={2} sx={{width: '100%' }}>
+          <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
             <TextField
               fullWidth
               variant="outlined"
