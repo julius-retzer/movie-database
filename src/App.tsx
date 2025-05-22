@@ -54,7 +54,8 @@ const theme = createTheme({
     divider: 'rgba(255, 255, 255, 0.12)',
   },
   typography: {
-    fontFamily: '"Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif',
+    fontFamily:
+      '"Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif',
   },
   components: {
     MuiButton: {
@@ -95,11 +96,20 @@ function App() {
         <BrowserRouter>
           <FavoritesProvider>
             <Header />
-            <Suspense fallback={
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-                <CircularProgress size={60} />
-              </div>
-            }>
+            <Suspense
+              fallback={
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '80vh',
+                  }}
+                >
+                  <CircularProgress size={60} />
+                </div>
+              }
+            >
               <Routes>
                 <Route path="/" element={<SearchPage />} />
                 <Route path="/movie/:id" element={<MovieDetailPage />} />

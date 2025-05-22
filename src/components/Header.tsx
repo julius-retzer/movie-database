@@ -65,11 +65,7 @@ export const Header = () => {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
-            <ListItemButton
-              component={RouterLink}
-              to={item.path}
-              selected={pathname === item.path}
-            >
+            <ListItemButton component={RouterLink} to={item.path} selected={pathname === item.path}>
               <ListItemIcon sx={{ minWidth: 40, justifyContent: 'center' }}>
                 {item.badge ? (
                   <Badge badgeContent={favorites.length} color="error">

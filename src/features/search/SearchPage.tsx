@@ -118,7 +118,7 @@ const SearchPage = () => {
                       edge="end"
                       onClick={() => {
                         setSearchParams({ query: '', page: 1 });
-                        reset({query: ''});
+                        reset({ query: '' });
                       }}
                       size="small"
                       aria-label="clear search"

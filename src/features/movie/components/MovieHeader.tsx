@@ -7,7 +7,13 @@ type MovieHeaderProps = {
 };
 
 export const MovieHeader = ({ movie }: MovieHeaderProps) => (
-  <Stack direction={{xs: 'column', md: 'row'}} alignItems="center" mb={2} gap={2} justifyContent="space-between">
+  <Stack
+    direction={{ xs: 'column', md: 'row' }}
+    alignItems="center"
+    mb={2}
+    gap={2}
+    justifyContent="space-between"
+  >
     <Stack direction="row" alignItems="center" gap={1}>
       <Typography variant="h3" component="h1">
         {movie.Title}

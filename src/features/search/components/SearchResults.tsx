@@ -64,7 +64,13 @@ export const SearchResults = ({ movies, loading }: SearchResultsProps) => {
           <Card sx={{ height: '100%' }} data-testid="movie-card">
             <MoviePoster movie={movie} />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div" noWrap data-testid="movie-title">
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                noWrap
+                data-testid="movie-title"
+              >
                 {movie.Title}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
