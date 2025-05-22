@@ -135,7 +135,7 @@ const SearchPage = () => {
               color="primary"
               disabled={!queryValue.trim()}
               startIcon={<SearchIcon />}
-              sx={{ width: 200, height: 56 }}
+              sx={{ width: { xs: 'initial', sm: 200 }, height: 56 }}
               loading={isLoading}
               type="submit"
               data-testid="search-button"
