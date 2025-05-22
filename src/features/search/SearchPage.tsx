@@ -97,7 +97,7 @@ const SearchPage = () => {
 
       <Box component="form" onSubmit={onSubmit} sx={{ width: '100%' }}>
         <Box sx={{ minHeight: 80, width: '100%' }}>
-          <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ width: '100%' }}>
             <TextField
               fullWidth
               variant="outlined"
@@ -135,7 +135,11 @@ const SearchPage = () => {
               color="primary"
               disabled={!queryValue.trim()}
               startIcon={<SearchIcon />}
-              sx={{ width: { xs: 'initial', sm: 200 }, height: 56 }}
+              sx={{
+                width: { xs: '100%', sm: 200 },
+                height: 56,
+                mt: { xs: 1, sm: 0 },
+              }}
               loading={isLoading}
               type="submit"
               data-testid="search-button"
