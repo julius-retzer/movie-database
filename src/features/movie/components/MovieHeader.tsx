@@ -23,7 +23,7 @@ export const MovieHeader = ({ movie }: MovieHeaderProps) => (
         size="large"
       />
     </Stack>
-    <Stack direction={{xs: 'column', md: 'row'}} alignItems={{xs: 'flex-start', md: 'center'}} gap={2}>
+    <Stack direction="row" alignItems="center" gap={2}>
       <Chip label={movie.Year} color="primary" variant="outlined" size="small" />
       {movie.Rated && movie.Rated !== 'N/A' && (
         <Chip label={movie.Rated} color="secondary" variant="outlined" size="small" />
