@@ -66,7 +66,42 @@ pnpm format
 
 # Check code formatting
 pnpm format:check
+
+# Open Cypress Test Runner (interactive mode)
+pnpm cypress:open
+
+# Run Cypress tests headlessly
+pnpm cypress:run
+
+# Run end-to-end tests (starts dev server and runs tests)
+pnpm test:e2e
 ```
+
+## Testing
+
+The application includes comprehensive end-to-end tests using Cypress. The tests are organized by feature to ensure maintainability and clarity.
+
+### Test Structure
+
+```
+cypress/
+├── e2e/
+│   ├── search.cy.js         # Tests for search functionality
+│   ├── movie-details.cy.js  # Tests for movie details page
+│   ├── favorites.cy.js      # Tests for favorites functionality
+│   └── navigation.cy.js     # Tests for navigation between pages
+└── ...
+```
+
+### Running Tests
+
+You can run the tests using the following commands:
+
+- **Interactive Mode**: `pnpm cypress:open` - Opens the Cypress Test Runner UI where you can select and run tests with a visual interface.
+  
+- **Headless Mode**: `pnpm cypress:run` - Runs all tests in the terminal without a UI.
+  
+- **End-to-End with Server**: `pnpm test:e2e` - Starts the development server and runs all tests against it.
 
 ## Application Structure
 
