@@ -1,54 +1,83 @@
-# React + TypeScript + Vite
+# Movie Database Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application for searching and managing your favorite movies. Built with TypeScript, Material UI, and React Query.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Movie Search**: Search for movies with pagination and persistent search results
+- **Movie Details**: View comprehensive information about each movie
+- **Favorites Management**: Save and manage your favorite movies
+- **Responsive Design**: Works on desktop and mobile devices
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 19** with TypeScript
+- **Material UI 7** with Emotion for styling
+- **React Router 7** for navigation
+- **React Query** for data fetching and caching
+- **React Hook Form** with Zod for form validation
+- **Vite** for fast development and optimized builds
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Prerequisites
+
+- Node.js (v18 or newer)
+- pnpm (v9.15.4 or newer)
+
+## Getting Started
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd movie-database
+
+# Install dependencies
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Configuration
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the root directory with your OMDb API key:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```
+VITE_OMDB_API_KEY=your_api_key_here
+```
+
+You can get an API key from [OMDb API](https://www.omdbapi.com/apikey.aspx).
+
+## Available Scripts
+
+```bash
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
+
+# Lint code
+pnpm lint
+
+# Format code with Prettier
+pnpm format
+
+# Check code formatting
+pnpm format:check
+```
+
+## Application Structure
+
+```
+src/
+├── components/        # Shared components
+├── features/          # Feature-based modules
+│   ├── movie/         # Movie details feature
+│   ├── search/        # Movie search feature
+│   └── favorites/     # Favorites management feature
+├── types/             # TypeScript type definitions
+├── api/               # API and other services
+└── App.tsx            # Main application component
 ```
