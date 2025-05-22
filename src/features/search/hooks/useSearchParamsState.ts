@@ -22,10 +22,10 @@ export const useSearchParamsState = (): UseSearchParamsStateReturn => {
   }, [searchParams]);
 
   const updateSearchParams = useCallback(
-    ({ query: newQuery, page: newPage }: Params) => {
+    ({ query, page }: Params) => {
       const params = new URLSearchParams();
-      if (newQuery) params.set('q', newQuery);
-      params.set('page', newPage.toString());
+      if (query) params.set('q', query);
+      params.set('page', page.toString());
       setSearchParams(params);
     },
     [setSearchParams]

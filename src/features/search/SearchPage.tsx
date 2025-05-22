@@ -13,12 +13,12 @@ import {
   TextField,
   Stack,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { searchMovies, isApiError } from '../../api/omdb';
 import { SearchResults } from './components/SearchResults';
 import { SearchPagination } from './components/SearchPagination';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 import { useSearchParamsState } from './hooks/useSearchParamsState';
+import { useMovieSearch } from './hooks/useMovieSearch';
+import { isApiError } from '../../types/api';
 
 const MIN_CHARACTERS = 3;
 const MAX_CHARACTERS = 100;
@@ -33,7 +33,7 @@ const searchSchema = z.object({
 type SearchFormData = z.infer<typeof searchSchema>;
 
 const ITEMS_PER_PAGE = 10;
-const MAX_PAGES = 100; // OMDb API limitation
+const MAX_PAGES = 100;
 
 export const SearchPage = () => {
   const { params, setSearchParams, handlePageChange } = useSearchParamsState();
@@ -54,29 +54,25 @@ export const SearchPage = () => {
 
   const queryValue = watch('query');
 
-  // Fetch movies data
+  // Fetch movies data using custom hook
   const {
     data,
     isLoading,
     isError,
     error: apiError,
-  } = useQuery({
-    queryKey: ['search', query, page],
-    queryFn: () => searchMovies(query, page),
-    enabled: query.length >= MIN_CHARACTERS,
+  } = useMovieSearch({
+    query,
+    page,
+    minCharacters: MIN_CHARACTERS,
   });
 
   // Handle search form submission
-  const onSubmit = useCallback(
-    (data: SearchFormData) => {
-      const trimmedQuery = data.query.trim();
-      if (!trimmedQuery) return;
-
+  const onSubmit = handleSubmit(
+    (data) => {
       // Only reset page if it's a new search
-      const newPage = trimmedQuery !== query ? 1 : page;
-      setSearchParams({ query: trimmedQuery, page: newPage });
-    },
-    [query, page, setSearchParams]
+      const newPage = data.query !== query ? 1 : page;
+      setSearchParams({ query: data.query, page: newPage });
+    }
   );
   // Calculate total pages
   const totalPages = useMemo(() => {
@@ -101,7 +97,7 @@ export const SearchPage = () => {
         Movie Search
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%' }}>
+      <Box component="form" onSubmit={onSubmit} sx={{ width: '100%' }}>
         <Box sx={{ minHeight: 80, width: '100%' }}>
           <Stack  direction="row" spacing={2} sx={{width: '100%' }}>
             <TextField
